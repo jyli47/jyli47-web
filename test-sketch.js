@@ -1,7 +1,7 @@
 function setup() {
   createCanvas(1000, 1000);
 }
-var movy=200
+var movy=150
 function draw() {
   background(220);
   triangle(500,10+movy,500,100+movy,300,100+movy)
