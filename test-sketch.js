@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(700, 700);
 }
 var movy=200
 function draw() {
