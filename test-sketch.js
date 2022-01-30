@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(700, 700);
+  createCanvas(1000, 600);
 }
 var movy = 0;
 var y = 350;
@@ -8,7 +8,7 @@ var movy=movy+y;
 function draw() {
   background(220);
  movx = movx + 1;
-  if (movx>700) {movx=0; movy=y;}
+  if (movx>1000) {movx=0; movy=y;}
   triangle(
     500 + movx,
     10 + movy,
