@@ -8,7 +8,7 @@ var movy=movy+y;
 function draw() {
   background(220);
  movx = movx + 1;
-  if (movx>500) {movx=0; movy=y;}
+  if (movx>800) {movx=0; movy=y;}
   triangle(
     500 + movx,
     10 + movy,
