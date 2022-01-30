@@ -2,7 +2,7 @@ function setup() {
   createCanvas(500, 500);
 }
 var movy = 0;
-var y = 350;
+var y = 200;
 var movx = 0;
 var movy=movy+y;
 function draw() {
