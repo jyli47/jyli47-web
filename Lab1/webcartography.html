@@ -1,24 +1,16 @@
 <!DOCTYPE html>
-<html lang='en'>
-  <head>
-    <meta charset='utf-8' />
-    <title>Points on a map</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Australian fires on Christmas 2019</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
-    <style>
-      body { 
-        margin: 0; 
-        padding: 0; 
-      }
-      #map { 
-        position: absolute; 
-        top: 0; 
-        bottom: 0; 
-        width: 100%; 
-      }
-    
-    .map-overlay {
+  <style>
+	   body { margin: 0; padding: 0; }
+	    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+      .map-overlay {
         position: absolute;
         font-family: sans-serif;
         margin-bottom: 40px;
@@ -29,24 +21,95 @@
         color: #fff;
       border-radius: 3px;
       }
-    
-    </style>
-  </head>
-  <body>
-    <div id='map'></div>
-    <script>
-    // The value for 'accessToken' begins with 'pk...'
-    mapboxgl.accessToken = 'pk.eyJ1IjoiamxpNDciLCJhIjoiY2wwMjc5dmRqMHE5eDNvcnlwd29zY3EyayJ9.zcqlSyi6nKyEO9JU36hy1w'; 
-    const map = new mapboxgl.Map({
-      container: 'map',
-      // Replace YOUR_STYLE_URL with your style URL.
-      style: 'mapbox://styles/jli47/cl02skpqv00fo15n7t28il3ak', 
-      center: [49.220, -122.835],
-      zoom: 9.24
+
+    .fireInfo {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 20px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  border: 2px solid black;
+  overflow: auto;
+  width: 26%;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class='map-overlay' id='features'><h2>Australian Wildfires on Christmas in 2019</h2>
+  <div id='pd'><p>Data provided by NASA's MODIS satellite imagery</p></div></div>
+  <div class='fireInfo'>
+  <div><strong>Intensity of fire by brightness:</strong> <span id='mag'></span></div>
+  <div><strong>Latitude:</strong> <span id='lat'></span><strong>°</strong></div>
+  <div><strong>Longitude:</strong> <span id='long'></span><strong>°</strong></div>
+</div>
+
+
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidHJhY3l3MDQiLCJhIjoiY2s2aDZvZXM3MDhjcDNkbnh1N3RjMTQyciJ9.tizMJBLoK0sqpa2bGsr6Qw';
+var map = new mapboxgl.Map({
+container: 'map', // container id
+style: 'mapbox://styles/tracyw04/ck6ss0zif0yyd1iprzv9l7twf', //hosted style id
+center: [133.77, -26], // starting position
+zoom: 3.9 // starting zoom
+});
+
+var magDisplay = document.getElementById('mag');
+var latDisplay = document.getElementById('lat');
+var longDisplay = document.getElementById('long');
+
+var quakeID = null;
+
+map.on('mousemove', 'lab1-6tcxtj', (e) => {
+
+  map.getCanvas().style.cursor = 'pointer';
+  // Set variables equal to the current feature's magnitude, location, and time
+  var quakeMagnitude = e.features[0].properties.brightness;
+  var quakelat = e.features[0].properties.latitude;
+  var quakelong = e.features[0].properties.longitude;
+
+  // Check whether features exist
+  if (e.features.length > 0) {
+    // Display the magnitude, location, and time in the sidebar
+    magDisplay.textContent = quakeMagnitude;
+    latDisplay.textContent = quakelat;
+    longDisplay.textContent = quakelong;
+
+    // If quakeID for the hovered feature is not null,
+    // use removeFeatureState to reset to the default behavior
+    if (quakeID) {
+      map.removeFeatureState({
+        source: "lab1-6tcxtj",
+        id: quakeID
+      });
+    }
+
+    quakeID = e.features[0].id;
+
+    // When the mouse moves over the earthquakes-viz layer, update the
+    // feature state for the feature under the mouse
+    map.setFeatureState({
+      source: 'lab1-6tcxtj',
+      id: quakeID,
+    }, {
+      hover: true
     });
 
-    // Code from the next step will go here.
+  }
+});
 
-    </script>
-  </body>
+
+
+
+
+</script>
+
+</body>
 </html>
